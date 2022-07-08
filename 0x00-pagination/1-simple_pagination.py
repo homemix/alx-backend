@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+"""
+:returns a list of indexes for the given page and page size
+"""
 
 import csv
-import math
 from typing import List
 
 index_range = __import__('0-simple_helper_function').index_range
