@@ -30,8 +30,11 @@ class LRUCache(BaseCaching):
                     self.cache_data_dict[key] = self.COUNT
                     # self.COUNT += 1
                 if key not in self.cache_data_dict:
-                    del self.cache_data[min(self.cache_data, key=self.cache_data.get)]
-                    del self.cache_data_dict[min(self.cache_data_dict, key=self.cache_data_dict.get)]
+                    del self.cache_data[
+                        min(self.cache_data, key=self.cache_data.get)]
+                    del self.cache_data_dict[
+                        min(self.cache_data_dict,
+                            key=self.cache_data_dict.get)]
                     self.cache_data[key] = item
                     self.cache_data_dict[key] = self.COUNT
                     # self.COUNT += 1
