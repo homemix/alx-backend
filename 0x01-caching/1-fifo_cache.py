@@ -24,9 +24,9 @@ class FIFOCache(BaseCaching):
         Add an item in the cache
         """
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            removed = self.cache_data_queue.pop(0)
-            self.cache_data.pop(removed)
-            print(f'DISCARD: {removed}')
+            key = self.cache_data_queue.pop(0)
+            self.cache_data.pop(key)
+            print(f'DISCARD: {key}')
 
         if key is not None and item is not None:
             self.cache_data_queue.append(key)
