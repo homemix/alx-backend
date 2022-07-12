@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+returns the value of the key in the cache
+"""
 
 from base_caching import BaseCaching
 
