@@ -19,33 +19,27 @@ class LRUCache(BaseCaching):
         Initiliaze
         """
         super().__init__()
-        self.cache_data_dict = {}
+        self.cache_data_list = []
 
     def put(self, key, item):
         """ Add an item in the cache
         """
+        # print(self.cache_data_dict)
         if key is not None and item is not None and key not in self.cache_data:
             if len(self.cache_data) >= self.MAX_ITEMS:
-                if key in self.cache_data_dict:
-                    self.cache_data_dict[key] = self.COUNT
-                    # self.COUNT += 1
-                if key not in self.cache_data_dict:
-                    del self.cache_data[
-                        min(self.cache_data, key=self.cache_data.get)]
-                    del self.cache_data_dict[
-                        min(self.cache_data_dict,
-                            key=self.cache_data_dict.get)]
-                    self.cache_data[key] = item
-                    self.cache_data_dict[key] = self.COUNT
-                    # self.COUNT += 1
-                    print(f'DISCARD: {key}')
+                del_key = self.cache_data_list.pop(0)
+                del self.cache_data[del_key]
+                print("DISCARD: {}".format(del_key))
+            if key in self.cache_data:
+                self.cache_data_list.remove(key)
             self.cache_data[key] = item
-            self.cache_data_dict[key] = self.COUNT
-            self.COUNT += 1
+            self.cache_data_list.append(key)
 
     def get(self, key):
         """ Get an item by key
         """
-        if key is not None:
+        if key in self.cache_data_list:
+            self.cache_data_list.remove(key)
+            self.cache_data_list.append(key)
             return self.cache_data.get(key)
         return None
