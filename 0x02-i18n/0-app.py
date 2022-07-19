@@ -11,6 +11,9 @@ app.template_folder = 'templates'
 
 @app.route('/')
 def index():
+    """
+    The index page
+    """
     return render_template('0-index.html')
 
 
