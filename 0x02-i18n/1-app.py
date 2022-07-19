@@ -2,8 +2,12 @@
 """
 A basic flask app to configure babel
 """
-from flask import Flask
+from flask import Flask, render_template
 from flask_babel import Babel
+
+app = Flask(__name__)
+app.template_folder = 'templates'
+babel = Babel(app)
 
 
 class Config(object):
@@ -15,7 +19,16 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-app = Flask(__name__)
-app.template_folder = 'templates'
-babel = Babel(app)
 app.config.from_object(Config)
+
+
+@app.route('/')
+def index():
+    """
+    The index page
+    """
+    return render_template('0-index.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
