@@ -11,7 +11,6 @@ class LFUCache(BaseCaching):
     returns the value of the key in the cache in LRU
     """
     MAX_ITEMS = 4
-    COUNT = 0
 
     def __init__(self):
         """
@@ -29,8 +28,9 @@ class LFUCache(BaseCaching):
                 del_key = self.cache_data_list.pop(0)
                 del self.cache_data[del_key]
                 print("DISCARD: {}".format(del_key))
-            if key in self.cache_data:
+            if key in self.cache_data and key in self.cache_data_list:
                 self.cache_data_list.remove(key)
+                self.cache_data[key] = item
             self.cache_data[key] = item
             self.cache_data_list.append(key)
 
