@@ -1,25 +1,9 @@
 #!/usr/bin/env python3
 """
-A basic flask app to configure babel
+Module 5-app
 """
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, gettext
-
-app = Flask(__name__)
-app.template_folder = 'templates'
-babel = Babel(app)
-
-
-class Config(object):
-    """
-    The config class
-    """
-    LANGUAGES = ['en', 'fr']
-    BABEL_DEFAULT_LOCALE = 'en'
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
-
-
-app.config.from_object(Config)
+from flask_babel import Babel
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -29,43 +13,49 @@ users = {
 }
 
 
-def get_user():
-    """
-    Get the user
-    """
-    user_id = request.args.get('login_as')
-    if user_id is None:
-        return None
-    return users.get(int(user_id))
+class Config(object):
+    """i18n configuration"""
+    LANGUAGES = ['en', 'fr']
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
-@app.before_request
-def before_request():
-    """
-    Before request
-    """
-    user = get_user()
-    g.user = user
+app = Flask(__name__)
+app.config.from_object(Config)
+babel = Babel(app)
+
+
+@app.route("/", strict_slashes=False)
+def index():
+    """displays a basic hello world message"""
+    return render_template("5-index.html")
 
 
 @babel.localeselector
 def get_locale():
-    """
-    The locale selector
-    """
+    """Gets best fmatch locale according to request"""
     locale = request.args.get('locale')
     if locale and locale in app.config['LANGUAGES']:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/')
-def index():
-    """
-    The index page
-    """
-    return render_template('4-index.html')
+def get_user():
+    """returns a given user"""
+    user_id = request.args.get('login_as')
+
+    if user_id is None:
+        return None
+
+    return users.get(int(user_id))
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.before_request
+def before_request():
+    """sets a user object to flask.g"""
+    user = get_user()
+    g.user = user
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port="5000")
