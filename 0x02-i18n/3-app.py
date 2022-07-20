@@ -2,11 +2,11 @@
 """
 A basic flask app to configure babel
 """
-from flask import Flask, render_template, request
 from flask_babel import Babel
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
-# app.template_folder = 'templates'
+app.template_folder = 'templates'
 babel = Babel(app)
 
 
