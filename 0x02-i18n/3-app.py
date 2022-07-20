@@ -6,7 +6,7 @@ from flask import Flask, render_template, request
 from flask_babel import Babel
 
 app = Flask(__name__)
-app.template_folder = 'templates'
+# app.template_folder = 'templates'
 babel = Babel(app)
 
 
