@@ -1,15 +1,21 @@
-let kue = require('kue');
+#!/usr/bin/yarn dev
+import { createQueue } from 'kue';
 
-let queue = kue.createQueue();
+const queue = createQueue({name: 'push_notification_code'});
 
-let msg = {
-    phoneNumber: 123,
-    message: 'Hello'
-}
-let job = queue.create('push_notification_code', msg)
-    .save(function (err,) {
-        if (!err) console.log(`Notification job created :${job.id}`);
-        if (err) console.log(`Notification job failed`);
-    }).on('complete', function (job) {
-        console.log(`Notification job completed :${job.id}`);
-    });
+const job = queue.create('push_notification_code', {
+  phoneNumber: '07045679939',
+  message: 'Account registered',
+});
+
+job
+  .on('enqueue', () => {
+    console.log('Notification job created:', job.id);
+  })
+  .on('complete', () => {
+    console.log('Notification job completed');
+  })
+  .on('failed attempt', () => {
+    console.log('Notification job failed');
+  });
+job.save();
