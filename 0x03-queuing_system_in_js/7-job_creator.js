@@ -1,5 +1,5 @@
 import { createQueue } from 'kue';
-import {job} from "kue/lib/http/routes/json";
+
 
 const jobs = [
   {
